@@ -1,0 +1,26 @@
+version: "3"
+services:
+  zookeeper:
+    image: wurstmeister/zookeeper:latest
+    environment:
+      ZOOKEEPER_SERVER_ID: 1
+      ZOOKEEPER_LISTENER_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+      ZOOKEEPER_INIT_LIMIT: 5
+      ZOOKEEPER_SYNC_LIMIT: 2
+    ports:
+      - "2181:2181"  # Порт для Zookeeper
+  kafka:
+    image: wurstmeister/kafka:latest
+    environment:
+      KAFKA_ADVERTISED_LISTENERS: INSIDE://:9093  # Рекламируем адрес Kafka для внешних клиентов
+      KAFKA_LISTENERS: INSIDE://:9092  # Kafka слушает на всех интерфейсах на порту 9093
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INSIDE:PLAINTEXT  # Протокол безопасности (нешифрованный)
+      KAFKA_LISTENER_NAME_INSIDE: INSIDE  # Название listener
+      KAFKA_LISTENER_PORT: 9093  # Порт на котором Kafka будет слушать
+      KAFKA_INTER_BROKER_LISTENER_NAME: INSIDE  # Протокол для связи между брокерами
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181  # Адрес Zookeeper
+    ports:
+      - "9093:9093"  # Порт для внешнего подключения
+    depends_on:
+      - zookeeper  # Kafka зависит от Zookeeper

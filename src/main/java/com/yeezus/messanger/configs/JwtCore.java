@@ -2,6 +2,8 @@ package com.yeezus.messanger.configs;
 
 
 import com.yeezus.messanger.entities.UserDetailsImpl;
+import com.yeezus.messanger.entities.users;
+import com.yeezus.messanger.repositories.userRepository;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Value;
@@ -23,6 +25,12 @@ public class JwtCore {
     private String secret;
     @Value("${spring.token.signing.expirationMs}")
     private int lifetime;
+
+    private final userRepository userRepository;
+
+    public JwtCore(userRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     public String generateToken(Authentication auth) {
         UserDetailsImpl userDetails = (UserDetailsImpl) auth.getPrincipal();
@@ -52,6 +60,11 @@ public class JwtCore {
 
     public Long getIdFromToken(String token) {
         return Jwts.parser().verifyWith(getSigningKey()).build().parseSignedClaims(token).getBody().get("id", Long.class);
+    }
+
+    public users getUserFromToken(String token){
+        Long UserId = getIdFromToken(token);
+        return userRepository.findById(UserId).orElseThrow();
     }
 
 

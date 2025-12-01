@@ -36,6 +36,6 @@ public class users {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "chat_id")
     )
-    private Set<chat> chats = new HashSet<chat>();
+    private Set<Chat> Chats = new HashSet<Chat>();
 
 }
