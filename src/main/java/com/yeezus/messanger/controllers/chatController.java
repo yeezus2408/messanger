@@ -3,12 +3,14 @@ package com.yeezus.messanger.controllers;
 import com.yeezus.messanger.configs.JwtCore;
 import com.yeezus.messanger.entities.Chat;
 import com.yeezus.messanger.entities.dto.ChatDto;
+import com.yeezus.messanger.entities.dto.MessageDto;
 import com.yeezus.messanger.entities.users;
 import com.yeezus.messanger.repositories.ChatRepository;
 import com.yeezus.messanger.repositories.userRepository;
 import com.yeezus.messanger.services.chatService;
 import com.yeezus.messanger.utils.ChatMapper;
 import lombok.extern.slf4j.Slf4j;
+import org.aspectj.bridge.Message;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -67,6 +69,12 @@ public class chatController {
 
         return ResponseEntity.ok("Group chat created successfully.");
     }
+
+
+//    @PostMapping("/createPrivateChat")
+//    public ResponseEntity<?> createPrivateChat(@RequestBody MessageDto messageDto, @RequestHeader("Authorization") String token) {
+//        //todo
+//    }
 
     @GetMapping("/GetChatsByCurrentUser")
     public ResponseEntity<List<ChatDto>> getChatsByCurrentUser(@RequestHeader("Authorization") String token) {

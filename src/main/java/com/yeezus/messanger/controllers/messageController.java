@@ -9,6 +9,8 @@ import com.yeezus.messanger.services.messageService;
 import com.yeezus.messanger.utils.MessageMapper;
 import org.aspectj.bridge.Message;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,7 +32,8 @@ public class messageController {
     }
 
 
-    @PostMapping("/sendMessage")
+    @MessageMapping("/chat")
+    @SendTo("/topic/messages")
     public ResponseEntity<?> sendMessage(@RequestBody newMessageDto newMessageDto, @RequestHeader("Authorization") String token) {
         return messageService.sendMessage(newMessageDto, token);
     }
